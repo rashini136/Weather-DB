@@ -26,6 +26,7 @@ st.markdown("""
         margin: 4px 2px;
         cursor: pointer;
         border-radius: 5px;
+        position: Fixed;
     }
     .stTitle {
         color: #D2691E;
