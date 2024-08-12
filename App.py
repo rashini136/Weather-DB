@@ -39,7 +39,7 @@ st.markdown("""
     </style>
     """, unsafe_allow_html=True)
 
-# HTML content
+#-------------------------------------------
 st.markdown("""
     <div style="background-color: #000035; padding: 20px; border-radius: 5px; box-shadow: 0 4px 8px rgba(0,0,0,0.1);">
         <h2 class="stTitle">Weather Dashboard</h2>
@@ -73,7 +73,7 @@ locations = {
     "Mexico City": (19.43, -99.13),
     "Sao Paulo": (-23.55, -46.63)
 }
-
+#-----------------------------------------------------
 
 def fetch_weather_data(latitude, longitude, start_date, end_date):
    
@@ -102,65 +102,62 @@ def fetch_weather_data(latitude, longitude, start_date, end_date):
 # Sidebar inputs
 # st.sidebar.header("Select Location, Date Range, and Coordinates")
 
-# Location selection
+
 selected_location = st.sidebar.selectbox("Select Location", options=list(locations.keys()))
 latitude, longitude = locations[selected_location]
 
-# Latitude and Longitude input
+
 latitude_input = st.sidebar.number_input("Latitude", value=latitude, format="%.6f")
 longitude_input = st.sidebar.number_input("Longitude", value=longitude, format="%.6f")
 
-# Date range input
+
 start_date = st.sidebar.date_input("Start Date", pd.to_datetime("2024-07-28"))
 end_date = st.sidebar.date_input("End Date", pd.to_datetime("2024-08-10"))
 
-# Convert date inputs to strings for API request
+#-----------------------------------------------------
 start_date_str = start_date.strftime("%Y-%m-%d")
 end_date_str = end_date.strftime("%Y-%m-%d")
 
-# Fetch weather data
+#-----------------------------------------------------
 data = fetch_weather_data(latitude_input, longitude_input, start_date_str, end_date_str)
 
-# Process data
+#----------------------------------------------------
 hourly = data['hourly']
 times = hourly['time']
 temperatures = hourly['temperature_2m']
 
-# Create DataFrame
+# ---------------------------------------------------------
 hourly_data = {
     "Date": pd.to_datetime(times),
     "temperature_2m": temperatures
 }
 hourly_dataframe = pd.DataFrame(data=hourly_data)
 
-# Display location and timezone information
+#-----------------------------------------------------
 st.write(f"Location: {selected_location} ({latitude_input}°N, {longitude_input}°E)")
 st.write(f"Timezone: {data['timezone']}")
 st.write(f"Data retrieved for {len(hourly_dataframe)} hours from {start_date_str} to {end_date_str}")
 
-# Plot data
+#-----------------------------------------------------
 st.line_chart(hourly_dataframe.set_index("Date"))
 
-# Map visualization
+#-----------------------------------------------------
 st.map(pd.DataFrame({'lat': [latitude_input], 'lon': [longitude_input]}))
 
-# Create a two-column layout for DataFrame and download button
+#-----------------------------------------------------
 col1, col2 = st.columns([1.5,1])
 
 with col1:
-    # Display DataFrame
+
     st.write(hourly_dataframe)
 
 with col2:
-    
-
-        # Summary Section
     st.subheader("Summary")
     st.write(f"Average Temperature: {hourly_dataframe['temperature_2m'].mean():.2f} °C")
     st.write(f"Maximum Temperature: {hourly_dataframe['temperature_2m'].max():.2f} °C")
     st.write(f"Minimum Temperature: {hourly_dataframe['temperature_2m'].min():.2f} °C")
     
-# Download Data as CSV
+#-----------------------------------------------------
     st.download_button(
         label="Download Data as CSV",
         data=hourly_dataframe.to_csv(index=False),
