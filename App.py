@@ -8,7 +8,7 @@ import requests
 st.markdown("""
     <style>
     .main {
-        background-color: #000000;
+        background-color: #008000;
         font-family: Arial, sans-serif;
     }
     .sidebar .sidebar-content {
