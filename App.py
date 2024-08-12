@@ -26,7 +26,7 @@ st.markdown("""
         margin: 4px 2px;
         cursor: pointer;
         border-radius: 5px;
-        position: Fixed;
+        position: fixed;
     }
     .stTitle {
         color: #D2691E;
@@ -74,13 +74,13 @@ locations = {
     "Sao Paulo": (-23.55, -46.63)
 }
 
-# Function to fetch weather data from Open-Meteo API
+
 def fetch_weather_data(latitude, longitude, start_date, end_date):
-    # Setup the Open-Meteo API client with cache and retry on error
+   
     cache_session = requests_cache.CachedSession('.cache', expire_after=3600)
     retry_session = retry(cache_session, retries=5, backoff_factor=0.2)
     
-    # Define API request parameters
+    
     url = "https://api.open-meteo.com/v1/forecast"
     params = {
         "latitude": latitude,
@@ -90,7 +90,7 @@ def fetch_weather_data(latitude, longitude, start_date, end_date):
         "hourly": "temperature_2m"
     }
     
-    # Make the API request
+
     response = retry_session.get(url, params=params)
     data = response.json()
     
@@ -128,8 +128,8 @@ temperatures = hourly['temperature_2m']
 
 # Create DataFrame
 hourly_data = {
-    "date": pd.to_datetime(times),
-    "temperature_2m": temperatures
+    "Date": pd.to_datetime(times),
+    "Temperature_2m": temperatures
 }
 hourly_dataframe = pd.DataFrame(data=hourly_data)
 
