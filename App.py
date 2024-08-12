@@ -129,7 +129,7 @@ temperatures = hourly['temperature_2m']
 # Create DataFrame
 hourly_data = {
     "Date": pd.to_datetime(times),
-    "Temperature_2m": temperatures
+    "temperature_2m": temperatures
 }
 hourly_dataframe = pd.DataFrame(data=hourly_data)
 
@@ -139,7 +139,7 @@ st.write(f"Timezone: {data['timezone']}")
 st.write(f"Data retrieved for {len(hourly_dataframe)} hours from {start_date_str} to {end_date_str}")
 
 # Plot data
-st.line_chart(hourly_dataframe.set_index("date"))
+st.line_chart(hourly_dataframe.set_index("Date"))
 
 # Map visualization
 st.map(pd.DataFrame({'lat': [latitude_input], 'lon': [longitude_input]}))
